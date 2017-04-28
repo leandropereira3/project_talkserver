@@ -92,7 +92,7 @@ public class TalkServiceTest {
 	}
 	
 	private Set<Usuario> createListaUsuariosCadastrados(){
-		Set<Usuario> usuariosCadastrados = new HashSet<>();
+		Set<Usuario> usuariosCadastrados = new HashSet<Usuario>();
 		usuariosCadastrados.add(createUsuario());
 		usuariosCadastrados.add(createUsuario());
 		usuariosCadastrados.add(createUsuario());

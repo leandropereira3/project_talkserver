@@ -19,19 +19,13 @@ public class Contato {
 	}
 	
 	public Contato(Session session, Usuario usuario) {
-		super();
-		//this.session = session;
+		super();		
 		this.usuario = usuario;
 	}
 	
 	public Contato(Session session, Usuario usuario, StatusContato status) {
-		super();
-		//this.session = session;
-		this.usuario = usuario;
-		//this.status = status;
-	}
-	
-//	public boolean isOnline(){
-//		return session != null && session.isOpen();
-//	}	
+		super();	
+		this.usuario = usuario;	
+	}	
+
 }

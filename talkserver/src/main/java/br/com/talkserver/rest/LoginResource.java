@@ -1,6 +1,7 @@
 package br.com.talkserver.rest;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response;
 @Path("/loginService")
 public class LoginResource extends ServicesRest{
 	
+	@ApiOperation(value="Verifica se o usuário informado existe e cria a sessão.")
 	@Path("/login/{user}/{pass}")
 	@GET
     @Produces({MediaType.TEXT_PLAIN})

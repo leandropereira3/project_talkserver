@@ -1,6 +1,7 @@
 package br.com.talkserver.rest;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,6 +18,7 @@ import br.com.talkserver.model.Usuario;
 @Path("/usuarioService")
 public class UsuarioResource extends ServicesRest{	
 	
+	@ApiOperation(value="Cria um novo usuário com os parâmetros informados.")
 	@POST
 	@Path("/inserirNovo/{apelido}/{login}/{senha}")
 	@Produces(MediaType.TEXT_HTML)
@@ -34,7 +36,8 @@ public class UsuarioResource extends ServicesRest{
 			return Response.status(Status.BAD_REQUEST).build();			
 		}		
 	}
-		
+	
+	@ApiOperation(value="Retorna a lista de todos os usuários cadastrados.")
 	@Path("/getUsuarios")
 	@GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -43,6 +46,7 @@ public class UsuarioResource extends ServicesRest{
 				MediaType.APPLICATION_JSON).build();				
 	}
 	
+	@ApiOperation(value="Retorna a lista de usuários de acordo com o filtro de login ou apelido.")
 	@Path("/getUsuariosPorApelidoOuLogin/{filtro}")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})

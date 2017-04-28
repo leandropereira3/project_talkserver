@@ -1,6 +1,7 @@
 package br.com.talkserver.rest;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 import java.util.LinkedList;
 import java.util.Set;
@@ -20,6 +21,7 @@ import br.com.talkserver.model.Usuario;
 @Path("/chatService")
 public class ChatResource extends ServicesRest{
 	
+	@ApiOperation(value="Vincula um novo contato a um usuário.")
 	@POST
 	@Path("/adicionarContato/{loginUser}/{loginUsuarioContato}")
 	@Produces(MediaType.TEXT_HTML)	
@@ -31,6 +33,7 @@ public class ChatResource extends ServicesRest{
 		return Response.ok().build();
 	}
 
+	@ApiOperation(value="Retorna a lista de contatos vinculados a um usuário.")
 	@Path("/getContatosAceitos/{loginUser}")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})
@@ -41,6 +44,7 @@ public class ChatResource extends ServicesRest{
 		return Response.ok(convertToJson(contatos),	MediaType.APPLICATION_JSON).build();				
 	}		
 
+	@ApiOperation(value="Retorna o histórico de mensagens entre dois usuários.")
 	@Path("/getHistoricoConversa/{loginUserA}/{loginUserB}")
 	@GET
     @Produces({MediaType.APPLICATION_JSON})
