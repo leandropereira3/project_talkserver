@@ -24,6 +24,7 @@ public class LoginResourceTest {
 	static final String URL = "http://localhost:8080/talkserver/rest";
 	static final String LOGIN_SERVICE = "/loginService/login";
 
+	//inicia o servidor a cada teste
 	@Before
 	public void init() throws IOException {
 		ResourceConfig config = new ResourceConfig().packages("br.com.talkserver.rest");
@@ -33,6 +34,7 @@ public class LoginResourceTest {
 		server.start();		
 	}
 	
+	//derruba o servidor a cada teste
 	@After
 	public void finish(){
 		server.shutdown();
