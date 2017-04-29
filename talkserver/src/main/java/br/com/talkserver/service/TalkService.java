@@ -21,14 +21,26 @@ public class TalkService {
 
 	TalkDao dao;
 	
+	/**
+	 * Construtor padrao
+	 */
 	public TalkService(){
 		this.dao = TalkDaoImpl.getInstance();
 	}
 	
+	/**
+	 * Construtor utilizado para o Mock
+	 */
 	public TalkService(TalkDao dao){
 		this.dao = dao;
 	}
 	
+	/**
+	 * Verifica se o usuario existe.
+	 * Caso nao exista salva o novo usuario
+	 * @param novoUsuario
+	 * @return
+	 */
 	public boolean salvarUsuario(Usuario novoUsuario){		
 		if(dao.getUsuarioPorLogin(novoUsuario.getLogin()) != null){
 			return Boolean.FALSE;
@@ -41,24 +53,54 @@ public class TalkService {
 		}		
 	}
 	
+	/**
+	 * Retorna um usuario
+	 * @param login
+	 * @return
+	 */
 	public Usuario getUsuarioPorLogin(String login){
 		return dao.getUsuarioPorLogin(login);	
 	}
 		
+	/**
+	 * Retorna os contatos associados a um usuário
+	 * @param usuario
+	 * @return
+	 */
 	public Set<Contato> obterListaDeContatosPorUsuario(Usuario usuario) {				
 		return dao.getMapaContatosAceitos().get(usuario);
 	}	
 	
+	/**
+	 * Retorna os contatos associados a um usuário
+	 * @param login
+	 * @return
+	 */
 	public Set<Contato> obterListaDeContatosPorUsuario(String login) {				
 		return obterListaDeContatosPorUsuario(getUsuarioPorLogin(login));
 	}
 	
+	/**
+	 * Retorna o usuário de destino de uma mensagem.
+	 * O usuário de destino é buscado na lista de contatos 
+	 * do usuário de origem
+	 * @param loginUsuarioOrigem
+	 * @param loginUsuarioDestino
+	 * @return
+	 */
 	public Contato obterContatoDestinoMensagem(String loginUsuarioOrigem, String loginUsuarioDestino) {				
 		Set<Contato> contatos = obterListaDeContatosPorUsuario(loginUsuarioOrigem);		
 		Contato contatoDestino = getContatoDestino(contatos, loginUsuarioDestino);
 		return contatoDestino;
 	}
 	
+	/**
+	 * Retorna o contato de destino presente na lista de de contatos do usuário
+	 * de origem 
+	 * @param contatosDaOrigem
+	 * @param loginContatoDestino
+	 * @return
+	 */
 	private Contato getContatoDestino(Set<Contato> contatosDaOrigem, String loginContatoDestino) {
 		if(contatosDaOrigem != null){
 			for (Contato contato : contatosDaOrigem) {
@@ -70,10 +112,21 @@ public class TalkService {
 		return null;
 	}
 	
+	/** 
+	 * @param contato
+	 * @param destino
+	 * @return
+	 */
 	private boolean isContatoDestino(Contato contato, String destino) {
 		return contato.getUsuario().getLogin().equals(destino);		
 	}
-			
+	
+	/**
+	 * Salva o histórico de mensagens entre dois usuários
+	 * @param userOrigem
+	 * @param usuarioDestino
+	 * @param msg
+	 */
 	public void salvarHistoricoConversa(Usuario userOrigem, Usuario usuarioDestino, Mensagem msg) {
 		ConversaPK pk = new ConversaPK(userOrigem, usuarioDestino);
 		
@@ -86,14 +139,28 @@ public class TalkService {
 		}		
 	}
 	
+	/**
+	 * Retorna a sessão do usuário
+	 * @param usuario
+	 * @return
+	 */
 	public Session obterSessaoUsuario(Usuario usuario){		
 		return dao.getMapaSessoes().get(usuario);
 	}
 		
+	/**
+	 * Salva a sessão do usuário no momento em que é feito o login
+	 * @param usuario
+	 * @return
+	 */
 	public void salvarSessao(Usuario usuario, Session sessao){
 		dao.getMapaSessoes().put(usuario, sessao);		
 	}
-		
+	
+	/**
+	 * Remove a sessão de um usuário
+	 * @param idSessao
+	 */
 	public void excluirSessao(String idSessao){
 		Usuario usuarioParaRemover = null;
 		for (Entry<Usuario, Session > map : dao.getMapaSessoes().entrySet()) {
@@ -104,10 +171,19 @@ public class TalkService {
 		dao.getMapaSessoes().remove(usuarioParaRemover);
 	}	
 	
+	/**
+	 * Retorna todos os usuários cadastrados.
+	 * @return
+	 */
 	public Set<Usuario> getUsuariosCadastrados(){
 		return dao.getUsuariosCadastrados();
 	}
 	
+	/**
+	 * Retorna um usuário pelo apelido ou pelo login
+	 * @param filtro
+	 * @return
+	 */
 	public List<Usuario> getUsuarioPorApelidoOuLogin(String filtro){
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		for (Usuario usuario : dao.getUsuariosCadastrados()) {
@@ -121,6 +197,12 @@ public class TalkService {
 		return usuarios;
 	}
 	
+	/**
+	 * Verifica se um usuário existe
+	 * @param novoUsuario
+	 * @param senha
+	 * @return
+	 */
 	public boolean isUsuarioExiste(String novoUsuario, String senha) {
 		for(Usuario usuarioCadastrado : dao.getUsuariosCadastrados()){
 			if(usuarioCadastrado.getLogin().equals(novoUsuario) && usuarioCadastrado.getSenha().equals(senha)){
@@ -130,6 +212,11 @@ public class TalkService {
 		return false;
 	}
 	
+	/**
+	 * Salva um contato na lista de contatos de um usuário
+	 * @param userAtual
+	 * @param userContato
+	 */
 	public void salvarContato(Usuario userAtual, Usuario userContato) {
 		Session sessaoUsuarioContato = dao.getMapaSessoes().get(userContato);
 		
@@ -142,6 +229,11 @@ public class TalkService {
 		}
 	}
 	
+	/**
+	 * Retorna a lista de contatos de um usuário
+	 * @param userAtual
+	 * @return
+	 */
 	public Set<Contato> getListaContatosAceitos(Usuario userAtual) {
 		Set<Contato> contatos = dao.getMapaContatosAceitos().get(userAtual);
 		if(contatos == null){
@@ -151,6 +243,12 @@ public class TalkService {
 		return contatos;
 	}
 	
+	/**
+	 * Retorna o histórico de mensagens entre dois usuários
+	 * @param usuarioOrigem
+	 * @param usuarioDestino
+	 * @return
+	 */
 	public LinkedList<String> obterHistoricoConversa(Usuario usuarioOrigem, Usuario usuarioDestino){
 		LinkedList<String> historico = new LinkedList<String>();
 		ConversaPK pk = new ConversaPK(usuarioOrigem, usuarioDestino);

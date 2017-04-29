@@ -15,6 +15,10 @@ import br.com.talkserver.model.ConversaPK;
 import br.com.talkserver.model.Usuario;
 
 
+/***
+ * Classe que faz a representação do banco de dados
+ * 
+ */
 public class TalkDaoImpl implements TalkDao{
 	
 	private static TalkDaoImpl instance;
